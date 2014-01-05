@@ -42,7 +42,7 @@ export SSL_NAME=openssl-1.0.1e
 wget -nc http://www.openssl.org/source/$SSL_NAME.tar.gz
 tar xzf $SSL_NAME.tar.gz
 cd $SSL_NAME
-./config --prefix=$PREFIX no-idea no-mdc2 no-rc5 zlib enable-tlsext no-ssl2 no-shared $CFLAGS && make depend && make -j $MAKE_JOBS install
+./config --prefix=$PREFIX no-idea no-mdc2 no-rc5 zlib enable-tlsext no-ssl2 no-shared $CFLAGS && make depend && make install
 cd ..
 
 export PREFIX=$QT_PREFIX

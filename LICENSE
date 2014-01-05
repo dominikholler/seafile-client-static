@@ -1,0 +1,7 @@
+for helper/natty.tar.xz see https://web.archive.org/web/20131217005513/http://www.ubuntu.com/about/about-ubuntu/licensing
+for binarys/* seafile is GPLv3, see https://github.com/haiwen/seafile/blob/master/LICENCE.txt, which uses among others:
+  SQLite, http://www.sqlite.org/copyright.html
+  OpenSSL, http://www.openssl.org/source/license.html
+  LibEvent, http://libevent.org/LICENSE.txt
+  Jansson, http://www.digip.org/jansson/
+scripts/* is public domain
