@@ -10,8 +10,9 @@
 export MAKE_JOBS=2
 
 #export version=2.1.0-testing
-export version=2.1.1-testing
-
+#export version=2.1.1-testing
+export version=3.1.4
+#/v3.0-latest
 
 export JANSSON_PREFIX=/opt/seafile
 export SSL_PREFIX=/opt/seafile
@@ -39,7 +40,7 @@ cd ..
 
 
 export PREFIX=$SSL_PREFIX
-export SSL_NAME=openssl-1.0.1e
+export SSL_NAME=openssl-1.0.1i
 wget -nc http://www.openssl.org/source/$SSL_NAME.tar.gz
 tar xzf $SSL_NAME.tar.gz
 cd $SSL_NAME
@@ -93,33 +94,39 @@ cd ..
 
 
 export PREFIX=$SEAFILE_PREFIX
-mkdir $version
-wget --content-disposition -nc https://github.com/haiwen/libsearpc/archive/v${version}.tar.gz
-wget --content-disposition -nc https://github.com/haiwen/ccnet/archive/v${version}.tar.gz
-wget --content-disposition -nc https://github.com/haiwen/seafile/archive/v${version}.tar.gz
-wget --content-disposition -nc https://github.com/haiwen/seafile-client/archive/v${version}.tar.gz
+export libsearpc_VERSION=3.0-latest
+export ccnet_VERSION=3.1.4
+export seafile_VERSION=3.1.4
+export seafileclient_VERSION=3.1.5
+mkdir $seafileclient_VERSION
+cd $seafileclient_VERSION
 
-cd $version
-tar xf ../libsearpc-${version}.tar.gz
-tar xf ../ccnet-${version}.tar.gz
-tar xf ../seafile-${version}.tar.gz
-tar xf ../seafile-client-${version}.tar.gz
+wget --content-disposition -nc https://github.com/haiwen/libsearpc/archive/v${libsearpc_VERSION}.tar.gz
+wget --content-disposition -nc https://github.com/haiwen/ccnet/archive/v${ccnet_VERSION}.tar.gz
+wget --content-disposition -nc https://github.com/haiwen/seafile/archive/v${seafile_VERSION}.tar.gz
+wget --content-disposition -nc https://github.com/haiwen/seafile-client/archive/v${seafileclient_VERSION}.tar.gz
 
-cd libsearpc-${version}
+for f in *.tar.gz
+do 
+  tar xvzf $f
+done
+
+
+cd libsearpc-*
 ./autogen.sh && ./configure --prefix=$PREFIX && make install
 cd ..
 
-cd ccnet-${version}
+cd ccnet-${ccnet_VERSION}
 ./autogen.sh
 ./configure --prefix=$PREFIX && make install
 cd ..
 
-cd seafile-${version}/
+cd seafile-${seafile_VERSION}/
 ./autogen.sh && ./configure --prefix=$PREFIX --disable-fuse  && make install
 cd ..
 
 
-cd seafile-client-${version}
+cd seafile-client-${seafileclient_VERSION}
 export VERBOSE=1
 cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=$PREFIX . && make install
 cd ..
@@ -128,7 +135,7 @@ cd ..
 cd /opt
 rm -rf seafile/ssl seafile/include seafile/lib/*.a seafile/bin/openssl
 cp seafile.old/bin/run_seafile-applet.sh seafile/bin/
-tar cvJf /tmp/seafile-client-$version-natty.tar.xz seafile
+tar cvJf /tmp/seafile-client-${seafileclient_VERSION}-natty.tar.xz seafile
 
 # -o seafile-applet -rdynamic -L/home/user/tmp/seafile/build/qt/lib -L/home/user/tmp/seafile/build/seafile-2.0.8/lib /home/user/tmp/seafile/build/qt/lib/libQtGui.a -lXrender -lfontconfig -lfreetype -lXext -lX11 /home/user/tmp/seafile/build/qt/lib/libQtNetwork.a /home/user/tmp/seafile/build/qt/lib/libQtCore.a -lrt -lpthread -ldl /home/user/tmp/seafile/build/qt/lib/libQtNetwork.a -lgio-2.0 -lgobject-2.0 -lglib-2.0 -lgio-2.0 -lgobject-2.0 -lglib-2.0 -lgio-2.0 -lgobject-2.0 -lglib-2.0 /home/user/tmp/seafile/build/qt/lib/libQtCore.a -lrt -lpthread -ldl -lgio-2.0 -lgobject-2.0 -lglib-2.0  -lgio-2.0 -lgobject-2.0 -lglib-2.0 -Wl,-rpath,/home/user/tmp/seafile/build/qt/lib:/home/user/tmp/seafile/build/seafile-2.0.8/lib:  -Wl,-Bstatic -lsqlite3 -lssl -lcrypto -lccnet -lseafile -lsearpc -lsearpc-json-glib -lgio-2.0 -luuid -levent -ljansson 
 
